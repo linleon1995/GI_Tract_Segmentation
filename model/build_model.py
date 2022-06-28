@@ -11,12 +11,8 @@ from model import unet3d
 
 
 
-
-# def build_keras_unet3d(row, col, index, checkpoint_path):
-#     predictor = keras_unet3d.unet_model_3d((1, row, col, index), batch_normalization=True)
-#     print(f"[INFO] Load trained model from {checkpoint_path}")
-#     predictor.load_weights(checkpoint_path)
-#     return predictor
+def build():
+    pass
 
 
 # def build_seg_3d_model()
@@ -39,7 +35,8 @@ def load_model_from_checkpoint(ckpt, model, device):
             if test_key in ckpt_state_key:
                 model_key = ckpt_state_key
                 break
-    assert model_key is not None, f'The checkpoint model key {model_key} does not exist in self-defined common model key.'
+    assert model_key is not None, \
+        f'The checkpoint model key {model_key} does not exist in self-defined common model key.'
     model.load_state_dict(state_key[model_key])
     model = model.eval()
     model = model.to(device)

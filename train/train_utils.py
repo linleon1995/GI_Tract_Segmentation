@@ -14,6 +14,7 @@ from train import loss
 
 
 
+
 loggers = {}
 def get_logger(name, level=logging.INFO):
     global loggers
@@ -59,8 +60,7 @@ def minmax_norm(data):
     return data
 
 
-def create_optimizer_temp(optimizer_config, model):
-    # TODO: add SGD
+def create_optimizer(optimizer_config, model):
     learning_rate = optimizer_config['learning_rate']
     weight_decay = optimizer_config.get('weight_decay', 0)
     momentum = optimizer_config.get('momentum', 0)
@@ -138,23 +138,6 @@ def config_logging(path, config, access_mode):
                 fw.write(f'{dict_key}: {dict_value}\n')
 
 
-
-
-def create_optimizer(lr, optimizer_config, model):
-    weight_decay = optimizer_config.get('weight_decay', 0)
-    momentum = optimizer_config.get('momentum', 0)
-    betas = tuple(optimizer_config.get('betas', (0.9, 0.999)))
-    optimizer_name = optimizer_config['optimizer']
-    if optimizer_name == 'Adam':
-        optimizer = optim.Adam(model.parameters(), lr=lr, betas=betas, weight_decay=weight_decay)
-    elif optimizer_name == 'SGD':
-        optimizer = optim.SGD(model.parameters(), lr=lr, betas=betas, momentum=momentum, weight_decay=weight_decay)
-    else:
-        raise ValueError('Unknown optimizer name.')
-    return optimizer
-
-
-
 def create_lr_scheduler(optimizer, step_size: int, gamma: float):
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size, gamma)
     return scheduler
@@ -195,3 +178,18 @@ def create_activation(name):
         raise ValueError('Unknown Loss name.')
     return activation
 
+
+logger = get_logger('ConfigLoader')
+def get_device(device_str=None):
+    # Get a device to train on
+    if device_str is not None:
+        logger.info(f"Device: '{device_str}'")
+        if device_str.startswith('cuda') and not torch.cuda.is_available():
+            logger.warn('CUDA not available, using CPU')
+            device_str = 'cpu'
+    else:
+        device_str = "cuda:0" if torch.cuda.is_available() else 'cpu'
+        logger.info(f"Using '{device_str}' device")
+
+    device = torch.device(device_str)
+    return device
