@@ -10,7 +10,7 @@ from train import metrics
 
 
 # TODO: training info
-# TODO: random clip of data (put here or data loader)
+# TODO: default logger?
 class Trainer(object):
     def __init__(
         self,
@@ -179,8 +179,16 @@ class Trainer(object):
             return False
 
     def load_model_from_checkpoint(self, ckpt, model_state_key='model_state_dict'):
-        # TODO: try-exception over all the state_key
+        common_model_keys = ['model', 'net', 'checkpoint', 'model_state_dict', 'state_dict']
         state_key = torch.load(ckpt, map_location=self.device)
+        model_key = None
+        for ckpt_state_key in state_key:
+            for test_key in common_model_keys:
+                if test_key in ckpt_state_key:
+                    model_key = ckpt_state_key
+                    break
+        assert model_key is not None, \
+            f'The checkpoint model key {model_key} does not exist in self-defined common model key.'
         self.model.load_state_dict(state_key[model_state_key], strict=self.strict)
         self.model = self.model.to(self.device)
 

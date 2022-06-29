@@ -15,32 +15,9 @@ def build():
     pass
 
 
-# def build_seg_3d_model()
-def build_seg_model(model_name, in_planes, n_class, device, pytorch_pretrained=True, checkpoint_path=None):
+def build_seg_model(model_name, in_planes, n_class, pytorch_pretrained=True):
     segmnetation_model = select_model(model_name, in_planes, n_class, pytorch_pretrained)
-    
-    if checkpoint_path is not None:
-        if pytorch_pretrained:
-            print(f'Warning: the model initial from {checkpoint_path} instead of Pytorch pre-trained model')
-        load_model_from_checkpoint(ckpt=checkpoint_path, model=segmnetation_model, device=device)
     return segmnetation_model
-
-
-def load_model_from_checkpoint(ckpt, model, device):
-    common_model_keys = ['model', 'net', 'checkpoint', 'model_state_dict', 'state_dict']
-    state_key = torch.load(ckpt, map_location=device)
-    model_key = None
-    for ckpt_state_key in state_key:
-        for test_key in common_model_keys:
-            if test_key in ckpt_state_key:
-                model_key = ckpt_state_key
-                break
-    assert model_key is not None, \
-        f'The checkpoint model key {model_key} does not exist in self-defined common model key.'
-    model.load_state_dict(state_key[model_key])
-    model = model.eval()
-    model = model.to(device)
-    return model
 
 
 def select_model(model_name, in_planes, n_class, pretrained=True):

@@ -60,7 +60,7 @@ def minmax_norm(data):
     return data
 
 
-def create_optimizer(optimizer_config, model):
+def get_optimizer(optimizer_config, model):
     learning_rate = optimizer_config['learning_rate']
     weight_decay = optimizer_config.get('weight_decay', 0)
     momentum = optimizer_config.get('momentum', 0)
@@ -90,7 +90,7 @@ def set_deterministic(manual_seed, random, np, torch):
     torch.backends.cudnn.deterministic = True
 
 
-def create_training_path(train_logdir, make_dir=True):
+def get_training_path(train_logdir, make_dir=True):
     idx = 0
     path = os.path.join(train_logdir, "run_{:03d}".format(idx))
     while os.path.exists(path):
@@ -138,12 +138,12 @@ def config_logging(path, config, access_mode):
                 fw.write(f'{dict_key}: {dict_value}\n')
 
 
-def create_lr_scheduler(optimizer, step_size: int, gamma: float):
+def get_lr_scheduler(optimizer, step_size: int, gamma: float):
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size, gamma)
     return scheduler
 
 
-# def create_lr_scheduler(lr_config, optimizer):
+# def get_lr_scheduler(lr_config, optimizer):
 #     if lr_config is None:
 #         return None
 #     class_name = lr_config.pop('name')
@@ -154,7 +154,7 @@ def create_lr_scheduler(optimizer, step_size: int, gamma: float):
 #     return clazz(**lr_config)
 
 
-def create_criterion(name, n_class):
+def get_criterion(name, n_class):
     if name == 'CrossEntropy':
         loss_func = nn.CrossEntropyLoss()
     elif name == 'BCE':
@@ -169,7 +169,7 @@ def create_criterion(name, n_class):
     return loss_func
 
 
-def create_activation(name):
+def get_activation(name):
     if name == 'sigmoid':
         activation = torch.sigmoid
     elif name == 'softmax':

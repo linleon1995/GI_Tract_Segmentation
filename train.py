@@ -3,28 +3,25 @@ import os
 from data.dataset import build_dataset
 from train.trainer import Trainer
 from train.train_utils import (
-    create_training_path, 
+    get_training_path, 
     get_device,
-    create_criterion, 
-    create_optimizer, 
-    create_activation
+    get_criterion, 
+    get_optimizer, 
+    get_activation
 )
 from model.build_model import build_seg_model
 import configuration
 
-# TODO: just pass the device config to model and trainer?
-# TODO: We maybe don'tneed device in model
-# TODO: Unify train_utils name
-# TODO: strcit data input output
+# TODO: strcit data input output --> dtype and shape
 def pytorch_model_train(cfg):
-    exp_path = create_training_path('../checkpoints')
+    exp_path = get_training_path('../checkpoints')
     checkpoint_path = cfg.TRAIN.CHECKPOINT_PATH
     device = get_device()
 
     # Model
     in_planes = 2*cfg.DATA.SLICE_SHIFT + 1
     model = build_seg_model(
-        model_name=cfg.MODEL.NAME, in_planes=in_planes, n_class=cfg.MODEL.N_CLASS, device=device)
+        model_name=cfg.MODEL.NAME, in_planes=in_planes, n_class=cfg.MODEL.N_CLASS)
     
     # Dataset
     train_dataloader, valid_dataloader = build_dataset(
@@ -32,9 +29,9 @@ def pytorch_model_train(cfg):
         transform_config=cfg.DATA.TRANSFORM)
     
     # Training
-    loss = create_criterion(cfg.TRAIN.LOSS, n_class=cfg.DATA.N_CLASS)
-    optimizer = create_optimizer(optimizer_config=cfg.TRAIN.OPTIMIZER, model=model)
-    valid_activation = create_activation(cfg.VALID.ACTIVATION)
+    loss = get_criterion(cfg.TRAIN.LOSS, n_class=cfg.DATA.N_CLASS)
+    optimizer = get_optimizer(optimizer_config=cfg.TRAIN.OPTIMIZER, model=model)
+    valid_activation = get_activation(cfg.VALID.ACTIVATION)
     trainer = Trainer(model,
                       criterion=loss,
                       optimizer=optimizer,

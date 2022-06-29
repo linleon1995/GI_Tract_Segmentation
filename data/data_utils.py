@@ -10,7 +10,7 @@ import pandas as pd
 
 
 
-def get_cv_split(num_fold, num_sample, shuffle=False, seed=0, save_path=None):
+def get_cv_split(num_fold, num_sample, shuffle=False, seed=0):
     assert num_fold > 0 and num_sample > 0, 'The fold number and sample number should both bigger than 0'
     assert num_sample > num_fold, 'The fold number should not bigger than sample number'
 
@@ -28,8 +28,6 @@ def get_cv_split(num_fold, num_sample, shuffle=False, seed=0, save_path=None):
         indices.append(list(sample_indices[acc_num:acc_num+num]))
         acc_num += num
 
-    if save_path is not None:
-        os.makedirs(save_path, exist_ok=True)
     cv_split = {}
     for fold in range(num_fold):
         test_slice = slice(fold, fold+1)
@@ -38,10 +36,6 @@ def get_cv_split(num_fold, num_sample, shuffle=False, seed=0, save_path=None):
         for train_slice in train_slices:
             train_indices.extend(indices[train_slice])
         cv_split[fold] = {'train': train_indices, 'test': indices[test_slice]}
-        if save_path is not None:
-            cases = cv_split[fold]['test']
-            df = pd.DataFrame(cases, columns=None, index=None)
-            df.to_csv(os.path.join(save_path, f'{fold}_fold.csv'))
     return cv_split
 
 
