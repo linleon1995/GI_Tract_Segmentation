@@ -1,0 +1,53 @@
+SEED: 1
+
+CV:
+  FOLD: 6
+  ASSIGN_FOLD: 0
+
+TRAIN:
+  # PROJECT_PATH: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection
+  CHECKPOINT_PATH: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\checkpoints\liwei\best.pt
+  # CHECKPOINT_PATH: null
+  EPOCH: 30
+  LOSS: DiceLoss
+  OPTIMIZER:
+  LR: 5.0e-6
+  OPTIMIZER:
+    optimizer: Adam
+    weight_decay: 0
+    momemtum: 0
+    betas:
+      - 0.9
+      - 0.99
+  CHECKPOINT_SAVING_STEPS: 10
+
+VALID:
+  ACTIVATION: softmax
+
+MODEL:
+  NAME: 2D-Mask-RCNN
+  backend: d2
+  N_CLASS: 1
+  
+DATA:
+  BATCH_SIZE: 4
+  SLICE_SHIFT: 3
+  NAMES: 
+    # TMH-Benign:
+    #   # FOLD: 4
+    #   COCO_PATH: C:\Users\test\Desktop\Leon\Datasets\TMH_Nodule\TMH-Benign\coco\Nodule_Detection\cv-5\4
+    LIDC:
+    # TMH_Nodule:
+    #   # FOLD: 5
+    #   COCO_PATH: C:\Users\test\Desktop\Leon\Datasets\TMH_Nodule-preprocess\coco\Malignancy\cv-5\4
+
+  # TODO: modify
+  TRANSFORM:
+    r: 5
+
+  TMH_Nodule:
+    DATA_ROOT: C:\Users\test\Desktop\Leon\Datasets\TMH_Nodule-preprocess
+    TASK_NAME: Nodule_Detection
+  LIDC:
+    DATA_ROOT: C:\Users\test\Desktop\Leon\Datasets\LIDC-preprocess
+    TASK_NAME: NoduleNet

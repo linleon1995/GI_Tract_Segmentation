@@ -58,3 +58,23 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+    # import SimpleITK as sitk
+    # import numpy as np
+    # root = rf'C:\Users\test\Desktop\Leon\Projects\ai-assisted-annotation-client\slicer-plugin\NvidiaAIAA'
+    # f = rf'tmpkvmkf1io.nii.gz'
+    # # itk_img = sitk.ReadImage(os.path.join(root, f))
+    # # img = sitk.GetArrayFromImage(itk_img)
+    # # img = np.uint8(img)
+    # # img_b = img.tobytes()
+    # # print(len(img_b))
+    # # with open(os.path.join(root, 'test.nii.gz'), 'wb') as fw:
+    # #     fw.write(img_b)
+    # import nrrd
+    # f = rf'C:\Users\test\Desktop\Leon\Weekly\0621\TMH\fold4\images\2466138720832919377868467891188675\nrrd\2466138720832919377868467891188675.seg.nrrd'
+    # image = sitk.ReadImage(f)
+    # data, header = nrrd.read(f)
+    # data = np.uint8(data)
+    # itk_image = sitk.Image(data)
+    # print(3)
+

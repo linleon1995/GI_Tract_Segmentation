@@ -1,0 +1,52 @@
+
+EVAL:
+  # CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\detectron2\checkpoints\run_027\ckpt_best.pth
+  # CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\checkpoints\run_057\ckpt_best.pth
+  # CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\checkpoints\run_073\ckpt_best.pth
+  CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\nodule_classification\ckpt\run_000
+  CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\nodule_classification\ckpt\run_018
+  CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\nodule_classification\ckpt\run_022
+  CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\nodule_classification\ckpt\run_033
+  # CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\nodule_classification\ckpt\run_031
+  # CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\nodule_classification\ckpt\run_062
+  # CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\nodule_classification\ckpt\run_034
+  # CHECKPOINT_ROOT: C:\Users\test\Desktop\Leon\Projects\Nodule_Detection\nodule_classification\ckpt\run_021
+  CHECKPOINT: ckpt_best.pth
+DATA:
+  BATCH_SIZE: 1
+  DATA_PATH: 
+    LUNA16: C:\Users\test\Desktop\Leon\Datasets\LUNA16-preprocess\crop
+    ASUS-B: C:\Users\test\Desktop\Leon\Datasets\ASUS_Nodules-preprocess\benign_merge\crop
+    ASUS-M: C:\Users\test\Desktop\Leon\Datasets\ASUS_Nodules-preprocess\malignant_merge\crop
+    TMH_Nodule: C:\Users\test\Desktop\Leon\Datasets\TMH_Nodule-preprocess\crop\32x64x64-10
+    LIDC: C:\Users\test\Desktop\Leon\Datasets\LIDC-preprocess\crop\32x64x64-10
+    TMH_Nodule_nodulenet: C:\Users\test\Desktop\Leon\Datasets\TMH_Nodule-preprocess\nodulenet\crop
+  COCO_PATH:
+    TMH_Nodule: C:\Users\test\Desktop\Leon\Datasets\TMH_Nodule-preprocess\coco\Nodule_Detection
+    LIDC: C:\Users\test\Desktop\Leon\Datasets\LIDC-preprocess\coco\NoduleNet
+    TMH_Nodule_nodulenet: C:\Users\test\Desktop\Leon\Datasets\TMH_Nodule-preprocess\coco\Nodule_Detection
+  CROP_RANGE:
+    index: 32
+    row: 64
+    column: 64
+  SHUFFLE: False
+  NPratio: 10
+  NPratio_test: 10
+  TASK: Malignancy
+  NAME:
+    # - LUNA16
+    # - ASUS-B
+    # - ASUS-M
+    # TMH_Nodule
+    # TMH_Nodule_nodulenet
+    LIDC
+MODEL:
+  ACTIVATION: softmax
+  NUM_CLASSES: 2
+  DEPTH: 50
+  NAME: 3dResnet
+
+
+CV:
+  FOLD: 6
+  ASSIGN: 0

@@ -11,6 +11,7 @@ from train import metrics
 
 # TODO: training info
 # TODO: default logger?
+# TODO: Think about this, Can this trainer work on tasks: 3d segmentation, 1d regression, 2d object detection
 class Trainer(object):
     def __init__(
         self,
