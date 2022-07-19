@@ -18,6 +18,7 @@ from inspect import isclass
 
 import pkgutil
 import importlib
+from pprint import pprint
 
 # from libs.base import Base
 
@@ -71,22 +72,22 @@ def build_model(model_name):
 
     # print(__file__)
     # a = join(dirname(__file__), 'pytorch', "*.py")
+    from pathlib import Path
     modules = glob.glob(join(dirname(__file__), 'pytorch', '**', "*.py"), recursive=True)
     modules = [ f for f in modules if isfile(f) and not f.endswith('__init__.py')]
     # __all__ = [ basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
 
-    for module in modules:
-        relative_path = os.path.relpath(module, os.getcwd())
-        from pathlib import Path
+    mapping = {}
+    for module_path in modules:
+        relative_path = os.path.relpath(module_path, os.getcwd())
         dir_parts = Path(relative_path).parts
-        module_path = '.'.join(dir_parts)[:-3]
-        module = importlib.import_module(module_path)
-        # module = importlib.import_module(f'model.pytorch.base.unet_2d')
+        module_imp_name = '.'.join(dir_parts)[:-3]
+        module = importlib.import_module(module_imp_name)
         classes = getmembers(module, isclass)
-        print(classes)
-        for cls in classes:
-            print(cls[0], cls[1].__bases__)
-
+        for name, cls in classes:
+            print(name, cls, cls.__bases__)
+            mapping[f'{module_imp_name}.{name}'] = cls
+    pprint(mapping)
     print(3)
     # model = importlib.import_module(f'model.{model_name}')
     # u = model.unet_2d
