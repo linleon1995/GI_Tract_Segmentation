@@ -7,11 +7,9 @@ from tensorboardX import SummaryWriter
 import sys
 
 from train import metrics
+from train.train_utils import get_logger
 
 
-# TODO: training info
-# TODO: default logger?
-# TODO: Think about this, Can this trainer work on tasks: 3d segmentation, 1d regression, 2d object detection
 class Trainer(object):
     def __init__(
         self,
@@ -20,10 +18,10 @@ class Trainer(object):
         optimizer, 
         train_dataloader, 
         valid_dataloader,
-        logger,
         device,
         n_class,
         exp_path,
+        logger=None,
         train_epoch=10,
         batch_size=1,
         lr_scheduler=None,
@@ -42,7 +40,6 @@ class Trainer(object):
         self.optimizer = optimizer
         self.train_dataloader = train_dataloader
         self.valid_dataloader = valid_dataloader
-        self.logger = logger
         self.iterations = 0
         self.device = device
         self.history = history
@@ -66,14 +63,11 @@ class Trainer(object):
         self.lr_scheduler = lr_scheduler
         self.patience = patience
 
-        
-        # Logger
-        logger = train_utils.get_logger('train')
-        logger.info('Start Training!!')
-        logger.info(f'Training epoch: {cfg.TRAIN.EPOCH} '
-                    f'Batch size: {cfg.DATA.BATCH_SIZE} '
-                    f'Training Samples: {len(train_dataloader.dataset)}')
-        train_utils.config_logging(os.path.join(exp_path, 'logging.txt'), cfg, access_mode='w+')
+        # # Logger
+        if logger is not None:
+            self.logger = logger
+        else:
+            self.logger = get_logger('train')
 
     def fit(self):
         for self.epoch in range(1, self.train_epoch + 1):
@@ -102,6 +96,11 @@ class Trainer(object):
         return output
 
     def train(self):
+        self.logger.info('Start Training!!')
+        self.logger.info(f'Training epoch: {self.epoch} '
+                         f'Batch size: {self.batch_size} '
+                         f'Training Samples: {len(self.train_dataloader.dataset)}')
+        
         self.model.train()
         print(60*"=")
         self.logger.info(f'Epoch {self.epoch}/{self.train_epoch}')

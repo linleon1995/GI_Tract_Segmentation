@@ -3,7 +3,7 @@ from functools import partial
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from model.model_utils import utils
+from model.pytorch.layer import utils
 
 # TODO: Complete resnetblock
 # TODO: add layer name

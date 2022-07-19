@@ -2,11 +2,12 @@ import logging
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from model.model_utils import utils
-from model.model_utils import layers
-from model.model_utils import backbones
+from model.pytorch.layer import utils
+from model.pytorch.layer import layers
+from model.pytorch.layer import backbones
 number_of_features_per_level = utils.number_of_features_per_level
-SingleConv = layers.SingleConv
+from model.pytorch.layer.layers import SingleConv
+# SingleConv = layers.SingleConv
 DoubleConv = layers.DoubleConv
 _DoubleConv = layers._DoubleConv
 Decoder = layers.Decoder

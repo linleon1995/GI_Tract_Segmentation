@@ -127,6 +127,7 @@ def get_logger(name, level=logging.INFO):
 
 # TODO: different indent of dataset config, preprocess config, train config
 # TODO: recursively
+# TODO: replace by MLflow later? --> we mostly just need to record some crucial variables
 def config_logging(path, config, access_mode):
     with open(path, access_mode) as fw:
         for dict_key in config:

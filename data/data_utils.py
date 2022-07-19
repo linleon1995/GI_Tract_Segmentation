@@ -115,6 +115,7 @@ def get_files(path, keys=[], return_fullpath=True, sort=True, sorting_key=None, 
     keys = list(set(keys))
 
     def push_back_filelist(root, f, file_list, is_fullpath):
+        # TODO: what if suffix lenth is not 3
         f = f[:-4] if ignore_suffix else f
         if is_fullpath:
             file_list.append(os.path.join(root, f))
